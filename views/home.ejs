@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <title>
+            <%= title %>
+        </title>
+       
+       <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+       <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <link rel="stylesheet" href="/css/home.css">
+    </head>
+    <body>
+      
+       <div id="container">
+         <div id="heading"><h1>TODO App</h1></div>
+
+         <form action="/create-task" method="POST">
+          
+            <div id="sub-container1" class="sub-container">
+               <label for="description">Description</label>
+               <br>
+               <input type="text" name="name" id="description" placeholder="What do you need to do?" required>            
+            </div>
+
+            <div id="sub-container2" class="sub-container">
+               <label for="category">Category</label>
+               <br>
+               <select name="category" id="category" required="true">
+                  <option value="" selected disabled>Choose an option</option>
+                  <option value = "Personal">Personal</option>
+                  <option value = "Work">Work</option>
+                  <option value = "School">School</option>
+                  <option value = "Cleaning">Cleaning</option>
+                  <option value = "Other">Other</option>
+
+               </select>
+
+            </div>
+             
+            <div id="sub-container3" class="sub-container">
+               <label for="due-date">Due Date</label>
+               <br>
+               <input type="date" id="due-date" name="dueDate">
+
+            </div>
+
+            <div id="sub-container4" class="sub-container">
+               <button type="submit" id="btn1"><i class="fas fa-plus"></i>&emsp;ADD</button>
+               <div id="btn2"><a href="/delete-all-checked"><i class="fas fa-trash-alt"></i>&emsp;DELETE TASKS</a></div>
+
+            </div>
+
+
+         </form>
+         
+ <!-- iterating over all items in db -->
+          <div id="list-container">
+            <ul id="list">
+              <% for(let i of todo_list){%>
+                <li>
+                   <!-- if checkbox is checked mark properety as checked  -->
+                    <% let genreChk = i.checked ? 'checked' : '' %>
+                    <a href="/mark/?id=<%= i._id%>"><label><input onchange="window.location.href='http://localhost:8000/mark/?id=<%= i._id%>'" type="checkbox" class="check" <%= genreChk%> ><span><%= i.name %></span></label></a>
+                    <% if(i.category == "Other"){%>
+                        <div class="d-category invisible"></div>                     
+                     <%}else{%>
+                        <div class="d-category"><%= i.category %></div>
+                     <%}%>
+                    
+                   <div class="d-delete"><a href="/delete-task/?id=<%= i._id%>"><i class="far fa-trash-alt delete"></i></a></div>
+                   <div class="d-calender" ><i class="fas fa-calendar-alt">&nbsp;&nbsp;</i><%= i.dueDate %></div>
+
+                </li>
+                               
+              <%}%>
+            
+            </ul> 
+         
+          </div>    
+   
+        </div>
+
+        <div id="toast"></div>
+        <script type="text/javascript" src="/js/home.js" ></script>
+           
+    </body>
+</html>   
